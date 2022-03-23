@@ -18,9 +18,6 @@ class App extends React.Component {
       searchQuery: e.target.value
     })
   };
-  getstuff = () => {
-    this.getPhotos();
-  }
   getPhotos = async (e) => {
     e.preventDefault();
     try {
@@ -57,7 +54,7 @@ class App extends React.Component {
       <>
         <h1>Image Finder</h1>
         <Container>
-          <Form onSubmit={this.getstuff} style={{ width: 'max-content', margin: 'auto' }}>
+          <Form onSubmit={this.getPhotos} style={{ width: 'max-content', margin: 'auto' }}>
 
             <Form.Group controlId="searchQuery">
               <Form.Label>What do you want to see?</Form.Label>
