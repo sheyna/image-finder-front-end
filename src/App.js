@@ -21,7 +21,7 @@ class App extends React.Component {
   getPhotos = async (e) => {
     e.preventDefault();
     try {
-      let results = await axios.get(`${process.env.REACT_APP_SERVER}/phtos?searchQuery=${this.state.searchQuery}`)
+      let results = await axios.get(`${process.env.REACT_APP_SERVER}/photos?searchQuery=${this.state.searchQuery}`)
       this.setState({
         photoData: results.data,
         showImages: true,
