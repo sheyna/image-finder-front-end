@@ -1,6 +1,6 @@
 import React from 'react';
 import './App.css';
-import { Button, Carousel, Container, Form } from 'react-bootstrap';
+import { Alert, Button, Carousel, Container, Form } from 'react-bootstrap';
 import axios from 'axios';
 
 class App extends React.Component {
@@ -9,6 +9,8 @@ class App extends React.Component {
     this.state = {
       searchQuery: '',
       photoData: [],
+      photoError: false,
+      photoErrorMessage: ''
     }
   }
   handleInput = (e) => {
@@ -16,11 +18,13 @@ class App extends React.Component {
       searchQuery: e.target.value
     })
   };
+  getstuff = () => {
+    this.getPhotos();
+  }
   getPhotos = async (e) => {
     e.preventDefault();
-
     try {
-      let results = await axios.get(`${process.env.REACT_APP_SERVER}/photos?searchQuery=${this.state.searchQuery}`)
+      let results = await axios.get(`${process.env.REACT_APP_SERVER}/phtos?searchQuery=${this.state.searchQuery}`)
       this.setState({
         photoData: results.data,
         showImages: true,
@@ -30,9 +34,9 @@ class App extends React.Component {
     } catch (error) {
       this.setState({
         photoError: true,
-        photoErrorMessage: `A Photo Error Occurred: ${error.response.status}, ${error.response.data}`
-
-      })
+        photoErrorMessage: 'A Photo Error Occurred'
+      });
+      //  photoErrorMessage: `A Photo Error Occurred:
     }
   }
 
@@ -53,7 +57,7 @@ class App extends React.Component {
       <>
         <h1>Image Finder</h1>
         <Container>
-          <Form onSubmit={this.getPhotos} style={{ width: 'max-content', margin: 'auto' }}>
+          <Form onSubmit={this.getstuff} style={{ width: 'max-content', margin: 'auto' }}>
 
             <Form.Group controlId="searchQuery">
               <Form.Label>What do you want to see?</Form.Label>
@@ -68,6 +72,12 @@ class App extends React.Component {
             <Carousel>
               {carouselItems}
             </Carousel>
+          </Container>
+        }
+        {
+          this.state.photoError &&
+          <Container>
+            <Alert variant="danger">{this.state.photoErrorMessage}</Alert>
           </Container>
         }
       </>
